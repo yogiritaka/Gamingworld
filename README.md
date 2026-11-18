@@ -1,2 +1,2 @@
-# gamigworld
+# gaming/world
 my gaming world
