@@ -4,18 +4,97 @@
     <title>GameVerse</title>
 
     <style>
-  body {
-    background: linear-gradient(
-        rgba(0,0,0,0.35),
-        rgba(0,0,0,0.55)
-    ),
-    url("Monkey%20Warrior%20Before%20Celestial%20Guardians.png");
+  
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: white;
+    background:
+        linear-gradient(rgba(0,0,0,0.40), rgba(0,0,0,0.65)),
+        url("Monkey%20Warrior%20Before%20Celestial%20Guardians.png");
 
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    min-height: 100vh;
 }
+
+header {
+    text-align: center;
+    padding: 35px 20px;
+    background: rgba(0,0,0,0.35);
+}
+
+header h1 {
+    font-size: 48px;
+    color: #00e5ff;
+    text-shadow: 0 0 15px #00e5ff;
+    margin-bottom: 12px;
+}
+
+header p {
+    font-size: 20px;
+}
+
+.hero {
+    min-height: 65vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.hero h2 {
+    font-size: 42px;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 8px black;
+}
+
+.hero p {
+    font-size: 21px;
+    margin-bottom: 25px;
+}
+
+button {
+    background: #00cfff;
+    color: black;
+    border: none;
+    padding: 15px 35px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: white;
+    transform: scale(1.05);
+}
+
+section {
+    text-align: center;
+    padding: 30px 20px;
+}
+
+section h2 {
+    font-size: 32px;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 8px black;
+}
+
+section p {
+    font-size: 19px;
+    margin-bottom: 15px;
+}
+
     </style>
 </head>
 
