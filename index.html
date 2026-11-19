@@ -4,29 +4,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GameVerse Community</title>
+<title>GameVerse - Gaming Community</title>
 
 <style>
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
 }
 
 body {
+    margin: 0;
     font-family: Arial, sans-serif;
     color: white;
+    background: #071225;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
     background:
-      linear-gradient(rgba(5,10,25,.88), rgba(5,10,25,.96)),
-      url("Monkey%20Warrior%20Before%20Celestial%20Guardians.png")
-      center / cover fixed;
-    min-height: 100vh;
+        linear-gradient(rgba(3,10,25,.84), rgba(3,10,25,.91)),
+        url("Monkey%20Warrior%20Before%20Celestial%20Guardians.png")
+        center / cover no-repeat;
 }
 
 header {
-    padding: 22px 6%;
-    background: rgba(8,15,32,.95);
-    border-bottom: 1px solid #263858;
+    background: rgba(5,13,30,.97);
+    border-bottom: 1px solid #203653;
+    padding: 16px 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -35,17 +41,22 @@ header {
 }
 
 .logo {
+    color: #00e5ff;
     font-size: 27px;
     font-weight: bold;
-    color: #00e5ff;
-    text-shadow: 0 0 15px #00e5ff;
+}
+
+nav {
+    display: flex;
+    gap: 22px;
+    flex-wrap: wrap;
 }
 
 nav a {
     color: white;
     text-decoration: none;
-    margin-left: 22px;
     font-weight: bold;
+    cursor: pointer;
 }
 
 nav a:hover {
@@ -54,12 +65,12 @@ nav a:hover {
 
 .hero {
     text-align: center;
-    padding: 55px 20px 35px;
+    padding: 55px 15px 35px;
 }
 
 .hero h1 {
-    font-size: clamp(32px, 5vw, 48px);
-    margin-bottom: 15px;
+    font-size: clamp(30px, 5vw, 48px);
+    margin: 0 0 15px;
 }
 
 .hero h1 span {
@@ -67,208 +78,206 @@ nav a:hover {
 }
 
 .hero p {
-    color: #b9c8df;
-    font-size: 17px;
+    color: #c0cee0;
 }
 
 .container {
-    max-width: 1250px;
+    max-width: 1200px;
     margin: auto;
-    padding: 20px;
+    padding: 15px 20px 60px;
+}
+
+.layout {
     display: grid;
-    grid-template-columns: 250px 1fr;
+    grid-template-columns: 235px 1fr;
     gap: 22px;
 }
 
-.panel, .post, .channel-card {
-    background: rgba(15,25,48,.94);
-    border: 1px solid #293d60;
+.panel, .channel-card, .channel-page {
+    background: rgba(13,27,49,.96);
+    border: 1px solid #294466;
     border-radius: 13px;
     padding: 20px;
 }
 
-.panel h2, .feed-title {
-    margin-bottom: 18px;
+h2 {
     color: #00e5ff;
 }
 
+.sidebar {
+    min-height: 350px;
+}
+
+.sidebar h2 {
+    font-size: 21px;
+}
+
 .channel-link {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 8px;
-    border-bottom: 1px solid #29364c;
-    color: white;
-}
-
-.channel-link span {
-    color: #9caec9;
-    font-size: 12px;
-}
-
-button {
-    border: none;
-    border-radius: 7px;
-    padding: 10px 16px;
-    background: #00cfff;
-    color: #06101e;
-    font-weight: bold;
+    padding: 12px;
+    margin: 8px 0;
+    background: #142640;
+    border-radius: 8px;
     cursor: pointer;
-    transition: .2s;
 }
 
-button:hover {
-    background: white;
-    transform: translateY(-2px);
+.channel-link:hover {
+    border: 1px solid #00e5ff;
 }
 
-button.following {
-    background: #263a57;
-    color: white;
-    border: 1px solid #00cfff;
+.section-title {
+    color: #00e5ff;
+    font-size: 23px;
+    margin: 8px 0 18px;
 }
 
 .channel-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 15px;
-    margin-bottom: 28px;
+    margin-bottom: 25px;
 }
 
 .channel-card {
     text-align: center;
+    transition: .2s;
 }
 
-.channel-card .emoji {
-    font-size: 35px;
-    margin-bottom: 10px;
+.channel-card:hover {
+    transform: translateY(-4px);
+    border-color: #00e5ff;
+}
+
+.emoji {
+    font-size: 42px;
 }
 
 .channel-card h3 {
-    margin-bottom: 8px;
+    margin: 12px 0 8px;
 }
 
-.channel-card p {
-    color: #9caec9;
+.followers {
+    color: #a8bad2;
     font-size: 13px;
-    margin-bottom: 14px;
 }
 
-.post {
-    margin-bottom: 16px;
-}
-
-.post-user {
-    color: #00e5ff;
+button {
+    background: #00d5f5;
+    color: #061322;
+    border: none;
+    padding: 11px 17px;
+    border-radius: 7px;
     font-weight: bold;
-    margin-bottom: 12px;
+    cursor: pointer;
+    margin: 5px 3px;
 }
 
-.post p {
-    line-height: 1.6;
-    color: #e0e8f5;
-    margin-bottom: 15px;
+button:hover {
+    background: #64edff;
 }
 
-.post-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-.post-actions button {
-    background: #263a57;
+button.secondary {
+    background: #243c5d;
     color: white;
-}
-
-.post-actions button:hover {
-    background: #007eac;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-bottom: 25px;
 }
 
 input, textarea {
     width: 100%;
-    padding: 13px;
+    padding: 14px;
+    margin: 7px 0;
     border-radius: 7px;
-    border: 1px solid #405575;
-    background: #0a1428;
+    border: 1px solid #3a5577;
+    background: #09162a;
     color: white;
-    font: inherit;
+    font-size: 15px;
 }
 
 textarea {
-    min-height: 85px;
+    min-height: 100px;
     resize: vertical;
 }
 
 input:focus, textarea:focus {
-    outline: 2px solid #00cfff;
+    outline: 1px solid #00e5ff;
+}
+
+.panel {
+    margin-bottom: 18px;
+}
+
+.post {
+    background: #10213a;
+    padding: 17px;
+    border-radius: 10px;
+    border: 1px solid #294466;
+    margin: 12px 0;
+}
+
+.post strong {
+    color: #00e5ff;
+}
+
+.post p {
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.channel-page {
+    margin-bottom: 22px;
+}
+
+.channel-banner {
+    text-align: center;
+    padding: 25px;
+    background: linear-gradient(135deg,#122f53,#111d38);
+    border-radius: 12px;
+    margin-bottom: 22px;
+}
+
+.channel-banner .emoji {
+    font-size: 65px;
+}
+
+.channel-banner h2 {
+    font-size: 30px;
+}
+
+.hidden {
+    display: none;
 }
 
 .empty {
-    color: #9caec9;
+    color: #a8bad2;
     padding: 15px 0;
 }
 
 footer {
     text-align: center;
-    padding: 30px;
-    color: #9caec9;
-}
-
-.channel-page {
-    background: rgba(12,25,48,.97);
-    border: 1px solid #00cfff;
-    border-radius: 14px;
     padding: 25px;
-    margin-bottom: 25px;
-}
-
-.channel-banner {
-    padding: 25px;
-    text-align: center;
-    background: linear-gradient(135deg, #102d50, #17203c);
-    border-radius: 12px;
-    margin-bottom: 20px;
-}
-
-.channel-banner .emoji {
-    font-size: 55px;
-}
-
-.channel-banner h2 {
-    font-size: 30px;
-    color: #00e5ff;
-    margin: 12px;
-}
-
-.discussion {
-    padding: 15px;
-    margin: 12px 0;
-    background: #101d35;
-    border: 1px solid #293d60;
-    border-radius: 10px;
-}
-
-.back-button {
-    margin-bottom: 18px;
+    color: #9aabc2;
+    border-top: 1px solid #294466;
 }
 
 @media(max-width: 750px) {
-    .container {
+    .layout {
         grid-template-columns: 1fr;
     }
 
-    nav a {
-        margin-left: 8px;
-        font-size: 13px;
+    .channel-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    header {
+        justify-content: center;
+    }
+
+    nav {
+        justify-content: center;
+    }
+}
+
+@media(max-width: 430px) {
+    .channel-grid {
+        grid-template-columns: 1fr;
     }
 }
 </style>
@@ -278,10 +287,11 @@ footer {
 
 <header>
     <div class="logo">🎮 GAMEVERSE</div>
+
     <nav>
-        <a href="#home">Home</a>
+        <a onclick="goHome()">Home</a>
         <a href="#channels">Channels</a>
-        <a href="#feed">Community</a>
+        <a href="#community">Community</a>
         <a href="#create">Create</a>
     </nav>
 </header>
@@ -293,62 +303,75 @@ footer {
 
 <div class="container">
 
-    <aside class="panel">
-        <h2>🔥 Your Channels</h2>
-        <div id="sidebarChannels"></div>
+<div class="layout">
 
-        <br>
-        <p style="color:#9caec9;font-size:13px">
-            Find your people. Follow your games.
-        </p>
-    </aside>
+<aside class="panel sidebar">
+    <h2>🔥 Your Channels</h2>
+    <div id="sidebarChannels"></div>
 
-    <main>
+    <br>
+    <p style="color:#9caec8;font-size:13px">
+        Find your people. Follow your games.
+    </p>
+</aside>
 
-        <h2 class="feed-title" id="channels">
-            🌍 Explore Channels
-        </h2>
-       <div class="channel-grid" id="channelGrid"></div>
+<main>
 
-<div id="channelPage"></div>
-            <h2>➕ Create a Channel</h2>
+    <h2 class="section-title" id="channels">
+        🌍 Explore Channels
+    </h2>
 
-            <form id="channelForm">
-                <input id="channelName"
-                    placeholder="Game name (e.g. Elden Ring)"
-                    required maxlength="35">
+    <div class="channel-grid" id="channelGrid"></div>
 
-                <input id="channelEmoji"
-                    placeholder="Channel emoji (e.g. ⚔️)"
-                    maxlength="8">
+    <div id="channelPage"></div>
 
-                <button type="submit">Create Channel</button>
-            </form>
-        </div>
+    <section class="panel" id="create">
+        <h2>➕ Create a Channel</h2>
 
-        <br>
+        <form id="channelForm">
+            <input
+                id="channelName"
+                placeholder="Game name (e.g. Elden Ring)"
+                required
+                maxlength="35">
 
-        <div class="panel" id="feed">
-            <h2>💬 Community Feed</h2>
+            <input
+                id="channelEmoji"
+                placeholder="Channel emoji (e.g. ⚔️)"
+                maxlength="8">
 
-            <form id="postForm">
-                <input id="playerName"
-                    placeholder="Your player name"
-                    maxlength="25" required>
+            <button type="submit" style="width:100%">
+                Create Channel
+            </button>
+        </form>
+    </section>
 
-                <textarea id="postText"
-                    placeholder="Share something with gamers..."
-                    maxlength="500" required></textarea>
+    <section class="panel" id="community">
+        <h2>💬 Community Feed</h2>
 
-                <button type="submit">Publish Post 🚀</button>
-            </form>
-        </div>
+        <form id="postForm">
+            <input
+                id="playerName"
+                placeholder="Your player name"
+                required
+                maxlength="25">
 
-        <br>
+            <textarea
+                id="postText"
+                placeholder="Share something with gamers..."
+                required
+                maxlength="500"></textarea>
+
+            <button type="submit" style="width:100%">
+                Publish Post 🚀
+            </button>
+        </form>
 
         <div id="postList"></div>
+    </section>
 
-    </main>
+</main>
+</div>
 </div>
 
 <footer>
@@ -356,41 +379,60 @@ footer {
 </footer>
 
 <script>
-const channels = [
-    {name:"Black Myth: Wukong", emoji:"🐒", followers:1250, following:false},
-    {name:"Minecraft", emoji:"⛏️", followers:2400, following:false},
-    {name:"GTA V", emoji:"🚗", followers:1800, following:false},
-    {name:"Free Fire", emoji:"🔥", followers:3200, following:false},
-    {name:"Valorant", emoji:"🎯", followers:950, following:false},
-    {name:"Elden Ring", emoji:"⚔️", followers:780, following:false}
+
+// GAME CHANNEL DATA
+
+const defaultChannels = [
+    {name:"Black Myth: Wukong",emoji:"🐒",followers:1250},
+    {name:"Minecraft",emoji:"⛏️",followers:2400},
+    {name:"GTA V",emoji:"🚘",followers:1800},
+    {name:"Free Fire",emoji:"🔥",followers:3200},
+    {name:"Valorant",emoji:"🎯",followers:950},
+    {name:"Elden Ring",emoji:"⚔️",followers:780}
 ];
 
-let posts = [
-    {
-        user:"ShadowWarrior",
-        game:"Black Myth: Wukong",
-        message:"Who is your favourite boss in Black Myth: Wukong? 🐒",
-        likes:24,
-        liked:false
-    },
-    {
-        user:"CraftMaster",
-        game:"Minecraft",
-        message:"Just finished building an amazing survival base! 🏰",
-        likes:15,
-        liked:false
-    },
-    {
-        user:"NightRider",
-        game:"GTA V",
-        message:"What is your favourite car in GTA V? 🚗",
-        likes:32,
-        liked:false
+function loadData(key, fallback) {
+    try {
+        const saved = localStorage.getItem(key);
+        return saved ? JSON.parse(saved) : fallback;
+    } catch {
+        return fallback;
     }
-];
+}
 
-function safe(text) {
-    return String(text).replace(/[&<>"']/g, char => ({
+let channels = loadData("gv_channels", defaultChannels).map(c => ({
+    ...c,
+    following: Boolean(c.following)
+}));
+
+let posts = loadData("gv_posts", [
+    {
+        id: 1,
+        user: "ShadowWarrior",
+        game: "Black Myth: Wukong",
+        message: "Who is your favourite boss in Black Myth: Wukong? 🐒",
+        likes: 24
+    },
+    {
+        id: 2,
+        user: "CraftMaster",
+        game: "Minecraft",
+        message: "Just finished building an amazing survival base! 🏠",
+        likes: 15
+    }
+]);
+
+let activeChannel = null;
+
+function saveData() {
+    localStorage.setItem("gv_channels", JSON.stringify(channels));
+    localStorage.setItem("gv_posts", JSON.stringify(posts));
+}
+
+// SAFELY DISPLAY TEXT
+
+function safe(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
         "&":"&amp;",
         "<":"&lt;",
         ">":"&gt;",
@@ -399,20 +441,32 @@ function safe(text) {
     })[char]);
 }
 
+// DISPLAY CHANNELS
+
 function renderChannels() {
-    document.getElementById("channelGrid").innerHTML =
-        channels.map((channel, index) => `
+
+    const grid = document.getElementById("channelGrid");
+
+    grid.innerHTML = channels.map((channel,index) => `
         <div class="channel-card">
+
             <div class="emoji">${safe(channel.emoji || "🎮")}</div>
-            <h3 onclick="openChannel(${index})"     style="cursor:pointer;color:#00e5ff">     ${safe(channel.name)} </h3>
-            <p>${channel.followers.toLocaleString()} followers</p>
-            <button class="${channel.following ? 'following' : ''}"
-                onclick="toggleFollow(${index})">
-                ${channel.following ? '✓ Following' : '+ Follow'}
+
+            <h3>${safe(channel.name)}</h3>
+
+            <p class="followers">
+                ${Number(channel.followers).toLocaleString()} followers
+            </p>
+
+            <button onclick="toggleFollow(${index})">
+                ${channel.following ? "✓ Following" : "+ Follow"}
             </button>
-            <button onclick="openChannel(${index})">
-             Open Channel →
+
+            <button class="secondary"
+                onclick="openChannel(${index})">
+                Open Channel →
             </button>
+
         </div>
     `).join("");
 
@@ -421,85 +475,127 @@ function renderChannels() {
     document.getElementById("sidebarChannels").innerHTML =
         followed.length
         ? followed.map(c => `
-            <div class="channel-link">
-                🎮 ${safe(c.name)}
-                <span>Following</span>
+            <div class="channel-link"
+                onclick="openChannel(${channels.indexOf(c)})">
+                ${safe(c.emoji)} ${safe(c.name)}
+                <span style="color:#00e5ff;font-size:12px">
+                    Following
+                </span>
             </div>
         `).join("")
         : '<p class="empty">You have not followed any channels yet.</p>';
 }
 
+// FOLLOW AND UNFOLLOW
+
 function toggleFollow(index) {
-    channels[index].following = !channels[index].following;
-    channels[index].followers += channels[index].following ? 1 : -1;
-    renderChannels();
-}
 
-let activeChannel = null;
-
-function openChannel(index) {
-    activeChannel = channels[index].name;
-    renderChannelPage();
-
-    document.getElementById("channelPage").scrollIntoView({
-        behavior: "smooth"
-    });
-}
-
-function renderChannelPage() {
-    const channel = channels.find(c => c.name === activeChannel);
+    const channel = channels[index];
 
     if (!channel) return;
 
-    const channelPosts = posts.filter(
-        p => p.game === activeChannel
+    channel.following = !channel.following;
+
+    channel.followers = Math.max(
+        0,
+        Number(channel.followers) + (channel.following ? 1 : -1)
     );
 
+    saveData();
+    renderChannels();
+
+    if (activeChannel === channel.name) {
+        renderChannelPage();
+    }
+}
+
+// OPEN INDIVIDUAL CHANNEL
+
+function openChannel(index) {
+
+    const channel = channels[index];
+
+    if (!channel) return;
+
+    activeChannel = channel.name;
+
+    renderChannelPage();
+
+    document.getElementById("channelPage").scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+    });
+}
+
+function closeChannel() {
+
+    activeChannel = null;
+
+    document.getElementById("channelPage").innerHTML = "";
+
+    document.getElementById("channels").scrollIntoView({
+        behavior:"smooth"
+    });
+}
+
+// DISPLAY INDIVIDUAL CHANNEL
+
+function renderChannelPage() {
+
+    const channel = channels.find(c => c.name === activeChannel);
+
+    if (!channel) {
+        activeChannel = null;
+        return;
+    }
+
+    const channelPosts = posts.filter(p => p.game === activeChannel);
+
     document.getElementById("channelPage").innerHTML = `
+
         <div class="channel-page">
 
-            <button class="back-button"
-                onclick="closeChannel()">
+            <button class="secondary" onclick="closeChannel()">
                 ← Back to Channels
             </button>
 
             <div class="channel-banner">
+
                 <div class="emoji">${safe(channel.emoji)}</div>
+
                 <h2>${safe(channel.name)}</h2>
-                <p>${channel.followers.toLocaleString()} followers</p>
-                <br>
-                <button onclick="toggleFollow(
-                    ${channels.indexOf(channel)}
-                )">
-                    ${channel.following ? "✓ Following" : "+ Follow"}
+
+                <p>${Number(channel.followers).toLocaleString()} followers</p>
+
+                <button onclick="toggleFollow(${channels.indexOf(channel)})">
+                    ${channel.following ? "✓ Following" : "+ Follow Channel"}
                 </button>
+
             </div>
 
             <h2>💬 ${safe(channel.name)} Discussions</h2>
 
             <form id="discussionForm">
+
                 <textarea id="discussionText"
                     placeholder="Share something with this gaming community..."
                     required maxlength="500"></textarea>
 
-                <button type="submit">Publish Discussion 🚀</button>
+                <button type="submit">
+                    Publish Discussion 🚀
+                </button>
+
             </form>
 
             <div id="channelDiscussions">
+
                 ${channelPosts.length
-                    ? channelPosts.map(p => `
-                        <div class="discussion">
-                            <strong style="color:#00e5ff">
-                                👤 ${safe(p.user)}
-                            </strong>
-                            <p style="margin-top:12px">
-                                ${safe(p.message)}
-                            </p>
-                        </div>
-                    `).join("")
+                    ? channelPosts.map(p => renderPostCard(p)).join("")
                     : '<p class="empty">No discussions yet. Start the conversation!</p>'
                 }
+
             </div>
+
         </div>
     `;
 
@@ -507,90 +603,94 @@ function renderChannelPage() {
         .addEventListener("submit", addChannelPost);
 }
 
-function addChannelPost(e) {
-    e.preventDefault();
+// CREATE A CHANNEL
 
-    const user = document.getElementById("playerName").value.trim();
-    const message = document.getElementById("discussionText").value.trim();
+document.getElementById("channelForm")
+.addEventListener("submit", function(e) {
 
-    if (!user) {
-        alert("Enter your player name in the Community Feed first!");
-        return;
-    }
-
-    if (!message) return;
-
-    posts.unshift({
-        user: user,
-        game: activeChannel,
-        message: message,
-        likes: 0,
-        liked: false
-    });
-
-    renderChannelPage();
-    renderPosts();
-
-    alert("Your discussion has been published! 🎮");
-}
-
-function closeChannel() {
-    activeChannel = null;
-    document.getElementById("channelPage").innerHTML = "";
-}
-
-function renderPosts() {
-    document.getElementById("postList").innerHTML =
-        posts.length
-        ? posts.map((post, index) => `
-            <div class="post">
-                <div class="post-user">
-                    👤 ${safe(post.user)}
-                </div>
-                <p>${safe(post.message)}</p>
-                <div style="color:#00cfff;font-size:13px;margin-bottom:12px">
-                    🎮 ${safe(post.game || "General Gaming")}
-                </div>
-                <div class="post-actions">
-                    <button onclick="toggleLike(${index})">
-                        ${post.liked ? '❤️' : '🤍'} ${post.likes} Likes
-                    </button>
-                </div>
-            </div>
-        `).join("")
-        : '<p class="empty">No posts yet. Be the first to share!</p>';
-}
-
-function toggleLike(index) {
-    posts[index].liked = !posts[index].liked;
-    posts[index].likes += posts[index].liked ? 1 : -1;
-    renderPosts();
-}
-
-document.getElementById("channelForm").addEventListener("submit", function(e) {
     e.preventDefault();
 
     const name = document.getElementById("channelName").value.trim();
     const emoji = document.getElementById("channelEmoji").value.trim() || "🎮";
+
+    if (!name) return;
 
     if (channels.some(c => c.name.toLowerCase() === name.toLowerCase())) {
         alert("This channel already exists!");
         return;
     }
 
-    channels.unshift({
+    channels.push({
         name:name,
         emoji:emoji,
         followers:0,
         following:false
     });
 
-    this.reset();
+    saveData();
     renderChannels();
-    alert("Your channel has been created! 🎮");
+
+    this.reset();
+
+    alert("Your gaming channel has been created! 🎮");
 });
 
-document.getElementById("postForm").addEventListener("submit", function(e) {
+// DISPLAY A POST
+
+function renderPostCard(post) {
+
+    return `
+        <div class="post">
+
+            <strong>👤 ${safe(post.user)}</strong>
+
+            <p style="color:#9aabc2;font-size:13px">
+                🎮 ${safe(post.game)}
+            </p>
+
+            <p>${safe(post.message)}</p>
+
+            <button onclick="likePost(${Number(post.id)})">
+                ❤️ ${Number(post.likes) || 0} Likes
+            </button>
+
+        </div>
+    `;
+}
+
+// GENERAL COMMUNITY FEED
+
+function renderPosts() {
+
+    document.getElementById("postList").innerHTML =
+        posts.length
+        ? posts.map(p => renderPostCard(p)).join("")
+        : '<p class="empty">No posts yet. Start the conversation!</p>';
+}
+
+// LIKE POSTS
+
+function likePost(id) {
+
+    const post = posts.find(p => p.id === id);
+
+    if (!post) return;
+
+    post.likes = (Number(post.likes) || 0) + 1;
+
+    saveData();
+    renderPosts();
+
+    if (activeChannel) {
+        renderChannelPage();
+    }
+}
+
+// PUBLISH COMMUNITY POST
+
+document.getElementById("postForm")
+.addEventListener("submit", function(e) {
+
     e.preventDefault();
 
     const user = document.getElementById("playerName").value.trim();
@@ -599,23 +699,71 @@ document.getElementById("postForm").addEventListener("submit", function(e) {
     if (!user || !message) return;
 
     posts.unshift({
+        id: Date.now(),
         user:user,
         game:"General Gaming",
         message:message,
-        likes:0,
-        liked:false
+        likes:0
     });
 
-    this.reset();
+    saveData();
     renderPosts();
+
+    this.reset();
+
     alert("Your post has been published! 🚀");
 });
 
+// PUBLISH A CHANNEL DISCUSSION
+
+function addChannelPost(e) {
+
+    e.preventDefault();
+
+    const user = document.getElementById("playerName").value.trim();
+    const message = document.getElementById("discussionText").value.trim();
+
+    if (!user) {
+        alert("Please enter your player name in the Community Feed first!");
+        return;
+    }
+
+    if (!message) return;
+
+    posts.unshift({
+        id:Date.now(),
+        user:user,
+        game:activeChannel,
+        message:message,
+        likes:0
+    });
+
+    saveData();
+
+    renderPosts();
+    renderChannelPage();
+
+    alert("Your discussion has been published! 🎮");
+}
+
+// HOME NAVIGATION
+
+function goHome() {
+
+    closeChannel();
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+// START WEBSITE
+
 renderChannels();
 renderPosts();
-    
+
 </script>
 
 </body>
 </html>
-
