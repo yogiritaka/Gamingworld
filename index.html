@@ -1,9 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>GameVerse</title>
 
-    <style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GameVerse Community</title>
+
+<style>
 * {
     margin: 0;
     padding: 0;
@@ -14,122 +17,457 @@ body {
     font-family: Arial, sans-serif;
     color: white;
     background:
-        linear-gradient(rgba(0,0,0,0.40), rgba(0,0,0,0.65)),
-        url("Monkey%20Warrior%20Before%20Celestial%20Guardians.png");
-
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+      linear-gradient(rgba(5,10,25,.88), rgba(5,10,25,.96)),
+      url("Monkey%20Warrior%20Before%20Celestial%20Guardians.png")
+      center / cover fixed;
     min-height: 100vh;
 }
 
 header {
-    text-align: center;
-    padding: 35px 20px;
-    background: rgba(0,0,0,0.35);
+    padding: 22px 6%;
+    background: rgba(8,15,32,.95);
+    border-bottom: 1px solid #263858;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
-header h1 {
-    font-size: 48px;
+.logo {
+    font-size: 27px;
+    font-weight: bold;
     color: #00e5ff;
     text-shadow: 0 0 15px #00e5ff;
-    margin-bottom: 12px;
 }
 
-header p {
-    font-size: 20px;
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 22px;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: #00e5ff;
 }
 
 .hero {
-    min-height: 65vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     text-align: center;
-    padding: 30px 20px;
+    padding: 55px 20px 35px;
 }
 
-.hero h2 {
-    font-size: 42px;
-    margin-bottom: 20px;
-    text-shadow: 2px 2px 8px black;
+.hero h1 {
+    font-size: clamp(32px, 5vw, 48px);
+    margin-bottom: 15px;
+}
+
+.hero h1 span {
+    color: #00e5ff;
 }
 
 .hero p {
-    font-size: 21px;
-    margin-bottom: 25px;
+    color: #b9c8df;
+    font-size: 17px;
+}
+
+.container {
+    max-width: 1250px;
+    margin: auto;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 22px;
+}
+
+.panel, .post, .channel-card {
+    background: rgba(15,25,48,.94);
+    border: 1px solid #293d60;
+    border-radius: 13px;
+    padding: 20px;
+}
+
+.panel h2, .feed-title {
+    margin-bottom: 18px;
+    color: #00e5ff;
+}
+
+.channel-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 8px;
+    border-bottom: 1px solid #29364c;
+    color: white;
+}
+
+.channel-link span {
+    color: #9caec9;
+    font-size: 12px;
 }
 
 button {
-    background: #00cfff;
-    color: black;
     border: none;
-    padding: 15px 35px;
-    font-size: 18px;
+    border-radius: 7px;
+    padding: 10px 16px;
+    background: #00cfff;
+    color: #06101e;
     font-weight: bold;
-    border-radius: 8px;
     cursor: pointer;
+    transition: .2s;
 }
 
 button:hover {
     background: white;
-    transform: scale(1.05);
+    transform: translateY(-2px);
 }
 
-section {
+button.following {
+    background: #263a57;
+    color: white;
+    border: 1px solid #00cfff;
+}
+
+.channel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 15px;
+    margin-bottom: 28px;
+}
+
+.channel-card {
     text-align: center;
-    padding: 30px 20px;
 }
 
-section h2 {
-    font-size: 32px;
+.channel-card .emoji {
+    font-size: 35px;
+    margin-bottom: 10px;
+}
+
+.channel-card h3 {
+    margin-bottom: 8px;
+}
+
+.channel-card p {
+    color: #9caec9;
+    font-size: 13px;
+    margin-bottom: 14px;
+}
+
+.post {
+    margin-bottom: 16px;
+}
+
+.post-user {
+    color: #00e5ff;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.post p {
+    line-height: 1.6;
+    color: #e0e8f5;
     margin-bottom: 15px;
-    text-shadow: 2px 2px 8px black;
 }
 
-section p {
-    font-size: 19px;
-    margin-bottom: 15px;
+.post-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
-    </style>
+.post-actions button {
+    background: #263a57;
+    color: white;
+}
+
+.post-actions button:hover {
+    background: #007eac;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 13px;
+    border-radius: 7px;
+    border: 1px solid #405575;
+    background: #0a1428;
+    color: white;
+    font: inherit;
+}
+
+textarea {
+    min-height: 85px;
+    resize: vertical;
+}
+
+input:focus, textarea:focus {
+    outline: 2px solid #00cfff;
+}
+
+.empty {
+    color: #9caec9;
+    padding: 15px 0;
+}
+
+footer {
+    text-align: center;
+    padding: 30px;
+    color: #9caec9;
+}
+
+@media(max-width: 750px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+
+    nav a {
+        margin-left: 8px;
+        font-size: 13px;
+    }
+}
+</style>
 </head>
 
 <body>
 
 <header>
-    <h1>GAMEVERSE</h1>
-    <p>Explore the World of Gaming</p>
+    <div class="logo">🎮 GAMEVERSE</div>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#channels">Channels</a>
+        <a href="#feed">Community</a>
+        <a href="#create">Create</a>
+    </nav>
 </header>
 
-<section class="hero">
-    <h2>Welcome to GameVerse</h2>
-    <p>Discover amazing games and adventures.</p>
-  <button onclick="exploreGames()">
-        Explore Now
-    </button>
+<section class="hero" id="home">
+    <h1>WELCOME TO <span>GAMEVERSE</span></h1>
+    <p>One world. Thousands of gamers. Your favourite games.</p>
 </section>
 
-<div class="game">
-    <h2>let us</h2>
-    <p>Explore a beautiful open world.</p>
+<div class="container">
+
+    <aside class="panel">
+        <h2>🔥 Your Channels</h2>
+        <div id="sidebarChannels"></div>
+
+        <br>
+        <p style="color:#9caec9;font-size:13px">
+            Find your people. Follow your games.
+        </p>
+    </aside>
+
+    <main>
+
+        <h2 class="feed-title" id="channels">🌍 Explore Channels</h2>
+        <div class="channel-grid" id="channelGrid"></div>
+
+        <div class="panel" id="create">
+            <h2>➕ Create a Channel</h2>
+
+            <form id="channelForm">
+                <input id="channelName"
+                    placeholder="Game name (e.g. Elden Ring)"
+                    required maxlength="35">
+
+                <input id="channelEmoji"
+                    placeholder="Channel emoji (e.g. ⚔️)"
+                    maxlength="8">
+
+                <button type="submit">Create Channel</button>
+            </form>
+        </div>
+
+        <br>
+
+        <div class="panel" id="feed">
+            <h2>💬 Community Feed</h2>
+
+            <form id="postForm">
+                <input id="playerName"
+                    placeholder="Your player name"
+                    maxlength="25" required>
+
+                <textarea id="postText"
+                    placeholder="Share something with gamers..."
+                    maxlength="500" required></textarea>
+
+                <button type="submit">Publish Post 🚀</button>
+            </form>
+        </div>
+
+        <br>
+
+        <div id="postList"></div>
+
+    </main>
 </div>
 
-<div class="game">
-    <h2>and</h2>
-    <p>Experience an epic action adventure.</p>
-</div>
-    
+<footer>
+    © 2026 GameVerse Community | Made for Gamers 🎮
+</footer>
+
 <script>
-    function exploreGames() {
-        alert("Welcome to GameVerse! Get ready for amazing adventures!");
+const channels = [
+    {name:"Black Myth: Wukong", emoji:"🐒", followers:1250, following:false},
+    {name:"Minecraft", emoji:"⛏️", followers:2400, following:false},
+    {name:"GTA V", emoji:"🚗", followers:1800, following:false},
+    {name:"Free Fire", emoji:"🔥", followers:3200, following:false},
+    {name:"Valorant", emoji:"🎯", followers:950, following:false},
+    {name:"Elden Ring", emoji:"⚔️", followers:780, following:false}
+];
+
+let posts = [
+    {
+        user:"ShadowWarrior",
+        game:"Black Myth: Wukong",
+        message:"Who is your favourite boss in Black Myth: Wukong? 🐒",
+        likes:24,
+        liked:false
+    },
+    {
+        user:"CraftMaster",
+        game:"Minecraft",
+        message:"Just finished building an amazing survival base! 🏰",
+        likes:15,
+        liked:false
+    },
+    {
+        user:"NightRider",
+        game:"GTA V",
+        message:"What is your favourite car in GTA V? 🚗",
+        likes:32,
+        liked:false
+    }
+];
+
+function safe(text) {
+    return String(text).replace(/[&<>"']/g, char => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#39;"
+    })[char]);
+}
+
+function renderChannels() {
+    document.getElementById("channelGrid").innerHTML =
+        channels.map((channel, index) => `
+        <div class="channel-card">
+            <div class="emoji">${safe(channel.emoji || "🎮")}</div>
+            <h3>${safe(channel.name)}</h3>
+            <p>${channel.followers.toLocaleString()} followers</p>
+            <button class="${channel.following ? 'following' : ''}"
+                onclick="toggleFollow(${index})">
+                ${channel.following ? '✓ Following' : '+ Follow'}
+            </button>
+        </div>
+    `).join("");
+
+    const followed = channels.filter(c => c.following);
+
+    document.getElementById("sidebarChannels").innerHTML =
+        followed.length
+        ? followed.map(c => `
+            <div class="channel-link">
+                🎮 ${safe(c.name)}
+                <span>Following</span>
+            </div>
+        `).join("")
+        : '<p class="empty">You have not followed any channels yet.</p>';
+}
+
+function toggleFollow(index) {
+    channels[index].following = !channels[index].following;
+    channels[index].followers += channels[index].following ? 1 : -1;
+    renderChannels();
+}
+
+function renderPosts() {
+    document.getElementById("postList").innerHTML =
+        posts.length
+        ? posts.map((post, index) => `
+            <div class="post">
+                <div class="post-user">
+                    👤 ${safe(post.user)}
+                </div>
+                <p>${safe(post.message)}</p>
+                <div style="color:#00cfff;font-size:13px;margin-bottom:12px">
+                    🎮 ${safe(post.game || "General Gaming")}
+                </div>
+                <div class="post-actions">
+                    <button onclick="toggleLike(${index})">
+                        ${post.liked ? '❤️' : '🤍'} ${post.likes} Likes
+                    </button>
+                </div>
+            </div>
+        `).join("")
+        : '<p class="empty">No posts yet. Be the first to share!</p>';
+}
+
+function toggleLike(index) {
+    posts[index].liked = !posts[index].liked;
+    posts[index].likes += posts[index].liked ? 1 : -1;
+    renderPosts();
+}
+
+document.getElementById("channelForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById("channelName").value.trim();
+    const emoji = document.getElementById("channelEmoji").value.trim() || "🎮";
+
+    if (channels.some(c => c.name.toLowerCase() === name.toLowerCase())) {
+        alert("This channel already exists!");
+        return;
     }
 
-    console.log("GameVerse JavaScript is working!");
-</script>
+    channels.unshift({
+        name:name,
+        emoji:emoji,
+        followers:0,
+        following:false
+    });
 
+    this.reset();
+    renderChannels();
+    alert("Your channel has been created! 🎮");
+});
+
+document.getElementById("postForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const user = document.getElementById("playerName").value.trim();
+    const message = document.getElementById("postText").value.trim();
+
+    if (!user || !message) return;
+
+    posts.unshift({
+        user:user,
+        game:"General Gaming",
+        message:message,
+        likes:0,
+        liked:false
+    });
+
+    this.reset();
+    renderPosts();
+    alert("Your post has been published! 🚀");
+});
+
+renderChannels();
+renderPosts();
+</script>
 
 </body>
 </html>
+
