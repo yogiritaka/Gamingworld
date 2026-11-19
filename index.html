@@ -223,6 +223,44 @@ footer {
     color: #9caec9;
 }
 
+.channel-page {
+    background: rgba(12,25,48,.97);
+    border: 1px solid #00cfff;
+    border-radius: 14px;
+    padding: 25px;
+    margin-bottom: 25px;
+}
+
+.channel-banner {
+    padding: 25px;
+    text-align: center;
+    background: linear-gradient(135deg, #102d50, #17203c);
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.channel-banner .emoji {
+    font-size: 55px;
+}
+
+.channel-banner h2 {
+    font-size: 30px;
+    color: #00e5ff;
+    margin: 12px;
+}
+
+.discussion {
+    padding: 15px;
+    margin: 12px 0;
+    background: #101d35;
+    border: 1px solid #293d60;
+    border-radius: 10px;
+}
+
+.back-button {
+    margin-bottom: 18px;
+}
+
 @media(max-width: 750px) {
     .container {
         grid-template-columns: 1fr;
@@ -268,7 +306,7 @@ footer {
     <main>
 
         <h2 class="feed-title" id="channels">🌍 Explore Channels</h2>
-        <div class="channel-grid" id="channelGrid"></div>
+        <div id="channelPage"></div>
 
         <div class="panel" id="create">
             <h2>➕ Create a Channel</h2>
@@ -364,11 +402,14 @@ function renderChannels() {
         channels.map((channel, index) => `
         <div class="channel-card">
             <div class="emoji">${safe(channel.emoji || "🎮")}</div>
-            <h3>${safe(channel.name)}</h3>
+            <h3 onclick="openChannel(${index})"     style="cursor:pointer;color:#00e5ff">     ${safe(channel.name)} </h3>
             <p>${channel.followers.toLocaleString()} followers</p>
             <button class="${channel.following ? 'following' : ''}"
                 onclick="toggleFollow(${index})">
                 ${channel.following ? '✓ Following' : '+ Follow'}
+            </button>
+            <button onclick="openChannel(${index})">
+             Open Channel →
             </button>
         </div>
     `).join("");
@@ -390,6 +431,110 @@ function toggleFollow(index) {
     channels[index].following = !channels[index].following;
     channels[index].followers += channels[index].following ? 1 : -1;
     renderChannels();
+}
+
+let activeChannel = null;
+
+function openChannel(index) {
+    activeChannel = channels[index].name;
+    renderChannelPage();
+
+    document.getElementById("channelPage").scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+function renderChannelPage() {
+    const channel = channels.find(c => c.name === activeChannel);
+
+    if (!channel) return;
+
+    const channelPosts = posts.filter(
+        p => p.game === activeChannel
+    );
+
+    document.getElementById("channelPage").innerHTML = `
+        <div class="channel-page">
+
+            <button class="back-button"
+                onclick="closeChannel()">
+                ← Back to Channels
+            </button>
+
+            <div class="channel-banner">
+                <div class="emoji">${safe(channel.emoji)}</div>
+                <h2>${safe(channel.name)}</h2>
+                <p>${channel.followers.toLocaleString()} followers</p>
+                <br>
+                <button onclick="toggleFollow(
+                    ${channels.indexOf(channel)}
+                )">
+                    ${channel.following ? "✓ Following" : "+ Follow"}
+                </button>
+            </div>
+
+            <h2>💬 ${safe(channel.name)} Discussions</h2>
+
+            <form id="discussionForm">
+                <textarea id="discussionText"
+                    placeholder="Share something with this gaming community..."
+                    required maxlength="500"></textarea>
+
+                <button type="submit">Publish Discussion 🚀</button>
+            </form>
+
+            <div id="channelDiscussions">
+                ${channelPosts.length
+                    ? channelPosts.map(p => `
+                        <div class="discussion">
+                            <strong style="color:#00e5ff">
+                                👤 ${safe(p.user)}
+                            </strong>
+                            <p style="margin-top:12px">
+                                ${safe(p.message)}
+                            </p>
+                        </div>
+                    `).join("")
+                    : '<p class="empty">No discussions yet. Start the conversation!</p>'
+                }
+            </div>
+        </div>
+    `;
+
+    document.getElementById("discussionForm")
+        .addEventListener("submit", addChannelPost);
+}
+
+function addChannelPost(e) {
+    e.preventDefault();
+
+    const user = document.getElementById("playerName").value.trim();
+    const message = document.getElementById("discussionText").value.trim();
+
+    if (!user) {
+        alert("Enter your player name in the Community Feed first!");
+        return;
+    }
+
+    if (!message) return;
+
+    posts.unshift({
+        user: user,
+        game: activeChannel,
+        message: message,
+        likes: 0,
+        liked: false
+    });
+
+    renderChannelPage();
+    renderPosts();
+
+    alert("Your discussion has been published! 🎮");
+}
+
+function closeChannel() {
+    activeChannel = null;
+    document.getElementById("channelPage").innerHTML = "";
 }
 
 function renderPosts() {
