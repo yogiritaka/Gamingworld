@@ -379,6 +379,45 @@ footer {
         <div id="postList"></div>
     </section>
 
+<section class="panel" id="profile">
+    <h2>🎮 My Gamer Profile</h2>
+
+    <div style="text-align:center; padding:20px;">
+        <div style="font-size:65px;">🦸</div>
+        <h3 id="profileName">Your Gamer Name</h3>
+        <p>Welcome to GameVerse!</p>
+    </div>
+
+    <form id="profileForm">
+        <label>Gamer Username</label>
+        <input
+            type="text"
+            id="gamerName"
+            placeholder="Enter your gamer name"
+            required
+        >
+
+        <label>Choose Your Avatar</label>
+        <select id="gamerAvatar">
+            <option value="🦸">🦸 Hero</option>
+            <option value="🥷">🥷 Ninja</option>
+            <option value="👑">👑 King</option>
+            <option value="🐉">🐉 Dragon</option>
+            <option value="🎮">🎮 Gamer</option>
+        </select>
+
+        <label>Your Favourite Game</label>
+        <input
+            type="text"
+            id="favoriteGame"
+            placeholder="e.g. Black Myth: Wukong"
+            required
+        >
+
+        <button type="submit">Save My Profile</button>
+    </form>
+</section>
+
 </main>
 </div>
 </div>
@@ -771,6 +810,49 @@ function goHome() {
 
 renderChannels();
 renderPosts();
+
+// GAMEVERSE PLAYER PROFILE
+
+const profileForm = document.getElementById("profileForm");
+
+function loadProfile() {
+    const savedProfile = localStorage.getItem("gameverseProfile");
+
+    if (savedProfile) {
+        const profile = JSON.parse(savedProfile);
+
+        document.getElementById("profileName").textContent =
+            profile.avatar + " " + profile.name;
+
+        document.getElementById("gamerName").value = profile.name;
+        document.getElementById("gamerAvatar").value = profile.avatar;
+        document.getElementById("favoriteGame").value = profile.favoriteGame;
+    }
+}
+
+profileForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const profile = {
+        name: document.getElementById("gamerName").value.trim(),
+        avatar: document.getElementById("gamerAvatar").value,
+        favoriteGame: document.getElementById("favoriteGame").value.trim()
+    };
+
+    if (!profile.name || !profile.favoriteGame) {
+        alert("Please fill in all fields!");
+        return;
+    }
+
+    localStorage.setItem("gameverseProfile", JSON.stringify(profile));
+
+    document.getElementById("profileName").textContent =
+        profile.avatar + " " + profile.name;
+
+    alert("Your GameVerse profile has been saved!");
+});
+
+loadProfile();
 
 </script>
 
