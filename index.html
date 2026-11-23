@@ -902,19 +902,19 @@ profileForm.addEventListener("submit", function(event) {
 loadProfile();
 
 // GAMINGWORLD SIGN UP
+// GAMINGWORLD SIGN UP
 async function signUp() {
     const email = document.getElementById("authEmail").value.trim();
     const password = document.getElementById("authPassword").value;
     const message = document.getElementById("authMessage");
 
-
-const { data, error } = await sb.auth.signUp({
-    email: email,
-    password: password,
-    options: {
-        emailRedirectTo: 'https://yogiritaka.github.io/Gamingworld/'
-    }
-});
+    const { data, error } = await sb.auth.signUp({
+        email: email,
+        password: password,
+        options: {
+            emailRedirectTo: "https://yogiritaka.github.io/Gamingworld/"
+        }
+    });
 
     if (error) {
         message.textContent = error.message;
