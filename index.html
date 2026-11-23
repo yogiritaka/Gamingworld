@@ -382,6 +382,43 @@ footer {
 <section class="panel" id="profile">
     <h2>🎮 My Gamer Profile</h2>
 
+<div class="auth-box">
+    <h3>🎮 Join GamingWorld</h3>
+
+    <form id="authForm">
+        <label>Email Address</label>
+        <input
+            type="email"
+            id="authEmail"
+            placeholder="Enter your email"
+            required
+        >
+
+        <label>Password</label>
+        <input
+            type="password"
+            id="authPassword"
+            placeholder="Create a password"
+            minlength="6"
+            required
+        >
+
+        <button type="button" onclick="signUp()">
+            Create Account
+        </button>
+
+        <button type="button" onclick="logIn()">
+            Log In
+        </button>
+
+        <button type="button" onclick="logOut()">
+            Log Out
+        </button>
+
+        <p id="authMessage"></p>
+    </form>
+</div>
+
     <div style="text-align:center; padding:20px;">
         <div style="font-size:65px;">🦸</div>
         <h3 id="profileName">Your Gamer Name</h3>
@@ -863,6 +900,50 @@ profileForm.addEventListener("submit", function(event) {
 });
 
 loadProfile();
+
+// GAMINGWORLD SIGN UP
+async function signUp() {
+    const email = document.getElementById("authEmail").value.trim();
+    const password = document.getElementById("authPassword").value;
+    const message = document.getElementById("authMessage");
+
+    const { data, error } = await sb.auth.signUp({
+        email: email,
+        password: password
+    });
+
+    if (error) {
+        message.textContent = error.message;
+    } else {
+        message.textContent = data.session
+            ? "Account created! Welcome to GamingWorld!"
+            : "Account created! Please check your email to confirm.";
+    }
+}
+
+// GAMINGWORLD LOG IN
+async function logIn() {
+    const email = document.getElementById("authEmail").value.trim();
+    const password = document.getElementById("authPassword").value;
+    const message = document.getElementById("authMessage");
+
+    const { error } = await sb.auth.signInWithPassword({
+        email: email,
+        password: password
+    });
+
+    message.textContent = error
+        ? error.message
+        : "Welcome back to GamingWorld!";
+}
+
+// GAMINGWORLD LOG OUT
+async function logOut() {
+    const { error } = await sb.auth.signOut();
+
+    document.getElementById("authMessage").textContent =
+        error ? error.message : "You have logged out.";
+}
 
 </script>
 
