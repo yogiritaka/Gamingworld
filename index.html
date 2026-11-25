@@ -816,7 +816,6 @@ async function likePost(id) {
     await loadPostsFromSupabase();
 
 }
-
 // PUBLISH COMMUNITY POST
 
 document.getElementById("postForm")
@@ -824,10 +823,9 @@ document.getElementById("postForm")
 
     e.preventDefault();
 
-    const username = document.getElementById("playerName").value.trim();
     const message = document.getElementById("postText").value.trim();
 
-    if (!username || !message) return;
+    if (!message) return;
 
     const { data: { user }, error: userError } = await sb.auth.getUser();
 
@@ -836,9 +834,22 @@ document.getElementById("postForm")
         return;
     }
 
+    // Get the saved GamingWorld profile
+    const { data: profile, error: profileError } = await sb
+        .from("profiles")
+        .select("username")
+        .eq("id", user.id)
+        .single();
+
+    if (profileError || !profile) {
+        alert("Please save your GamingWorld profile before posting.");
+        return;
+    }
+
+    // Publish using the saved profile name
     const { error } = await sb.from("posts").insert({
         user_id: user.id,
-        username: username,
+        username: profile.username,
         game: "General Gaming",
         message: message,
         likes: 0
@@ -853,9 +864,10 @@ document.getElementById("postForm")
     this.reset();
 
     alert("Your post has been published! 🚀");
+
+    await loadPostsFromSupabase();
+
 });
-    
-// PUBLISH A CHANNEL DISCUSSION
 
 function addChannelPost(e) {
 
