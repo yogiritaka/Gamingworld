@@ -784,23 +784,34 @@ async function loadPostsFromSupabase() {
     renderPosts();
 }
 
-// LIKE POSTS
+ // LIKE POSTS - SAVE LIKES TO SUPABASE
 
-function likePost(id) {
+async function likePost(id) {
+
+    const { data, error } = await sb.rpc(
+        "increment_post_likes",
+        { post_id: id }
+    );
+
+    if (error) {
+        alert("Like failed: " + error.message);
+        console.error(error);
+        return;
+    }
 
     const post = posts.find(p => p.id === id);
 
-    if (!post) return;
+    if (post) {
+        post.likes = data;
+    }
 
-    post.likes = (Number(post.likes) || 0) + 1;
-
-    saveData();
     renderPosts();
 
     if (activeChannel) {
         renderChannelPage();
     }
 }
+
 // PUBLISH COMMUNITY POST
 
 document.getElementById("postForm")
