@@ -779,27 +779,44 @@ function likePost(id) {
         renderChannelPage();
     }
 }
-
 // PUBLISH COMMUNITY POST
 
 document.getElementById("postForm")
-.addEventListener("submit", function(e) {
+.addEventListener("submit", async function(e) {
 
     e.preventDefault();
 
-    const user = document.getElementById("playerName").value.trim();
+    const username = document.getElementById("playerName").value.trim();
     const message = document.getElementById("postText").value.trim();
 
-    if (!user || !message) return;
+    if (!username || !message) return;
 
-    posts.unshift({
-        id: Date.now(),
-        user:user,
-        game:"General Gaming",
-        message:message,
-        likes:0
+    const { data: { user }, error: userError } = await sb.auth.getUser();
+
+    if (userError || !user) {
+        alert("Please log in before publishing a post.");
+        return;
+    }
+
+    const { error } = await sb.from("posts").insert({
+        user_id: user.id,
+        username: username,
+        game: "General Gaming",
+        message: message,
+        likes: 0
     });
 
+    if (error) {
+        alert("Post failed: " + error.message);
+        console.error(error);
+        return;
+    }
+
+    this.reset();
+
+    alert("Your post has been published! 🚀");
+
+});
     saveData();
     renderPosts();
 
