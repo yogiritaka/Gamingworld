@@ -762,6 +762,28 @@ function renderPosts() {
         : '<p class="empty">No posts yet. Start the conversation!</p>';
 }
 
+// LOAD COMMUNITY POSTS FROM SUPABASE
+
+async function loadPostsFromSupabase() {
+
+    const { data, error } = await sb
+        .from("posts")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+    if (error) {
+        console.error("Could not load posts:", error);
+        return;
+    }
+
+    posts = data.map(p => ({
+        ...p,
+        user: p.username
+    }));
+
+    renderPosts();
+}
+
 // LIKE POSTS
 
 function likePost(id) {
@@ -865,7 +887,8 @@ function goHome() {
 
 renderChannels();
 renderPosts();
-
+loadPostsFromSupabase();
+    
 // Gamingworld PLAYER PROFILE
 
 const profileForm = document.getElementById("profileForm");
