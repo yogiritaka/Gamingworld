@@ -786,31 +786,38 @@ async function loadPostsFromSupabase() {
 
  // LIKE POSTS - SAVE LIKES TO SUPABASE
 
+
 async function likePost(id) {
 
-    const { data, error } = await sb.rpc(
-        "increment_post_likes",
-        { post_id: id }
-    );
+    const { data: { user }, error: userError } =
+        await sb.auth.getUser();
 
-    if (error) {
-        alert("Like failed: " + error.message);
-        console.error(error);
+    if (userError || !user) {
+        alert("Please log in to like posts.");
         return;
     }
 
-    const post = posts.find(p => p.id === id);
+    const { error } = await sb
+        .from("post_likes")
+        .insert({
+            post_id: id,
+            user_id: user.id
+        });
 
-    if (post) {
-        post.likes = data;
+    if (error) {
+        if (error.code === "23505") {
+            alert("You have already liked this post! ❤️");
+        } else {
+            alert("Like failed: " + error.message);
+            console.error(error);
+        }
+        return;
     }
 
-    renderPosts();
+    await loadPostsFromSupabase();
 
-    if (activeChannel) {
-        renderChannelPage();
-    }
 }
+
 
 // PUBLISH COMMUNITY POST
 
