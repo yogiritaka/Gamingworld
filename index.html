@@ -876,7 +876,7 @@ function loadProfile() {
     }
 }
 
-profileForm.addEventListener("submit", function(event) {
+profileForm.addEventListener("submit", async function(event) {
     event.preventDefault();
 
     const profile = {
@@ -887,6 +887,25 @@ profileForm.addEventListener("submit", function(event) {
 
     if (!profile.name || !profile.favoriteGame) {
         alert("Please fill in all fields!");
+        return;
+    }
+
+    const { data: { user }, error: userError } = await sb.auth.getUser();
+
+    if (userError || !user) {
+        alert("Please log in before saving your profile!");
+        return;
+    }
+
+    const { error } = await sb.from("profiles").upsert({
+        id: user.id,
+        username: profile.name,
+        avatar: profile.avatar,
+        favorite_game: profile.favoriteGame
+    });
+
+    if (error) {
+        alert("Profile save failed: " + error.message);
         return;
     }
 
