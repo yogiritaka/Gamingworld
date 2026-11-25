@@ -786,7 +786,6 @@ async function loadPostsFromSupabase() {
 
  // LIKE POSTS - SAVE LIKES TO SUPABASE
 
-
 async function likePost(id) {
 
     const { data: { user }, error: userError } =
@@ -817,7 +816,6 @@ async function likePost(id) {
     await loadPostsFromSupabase();
 
 }
-
 
 // PUBLISH COMMUNITY POST
 
