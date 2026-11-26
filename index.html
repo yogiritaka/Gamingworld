@@ -1135,6 +1135,7 @@ async function signUp() {
 }
     
 // GAMINGWORLD LOG IN
+// GAMINGWORLD LOG IN
 async function logIn() {
     const email = document.getElementById("authEmail").value.trim();
     const password = document.getElementById("authPassword").value;
@@ -1145,11 +1146,36 @@ async function logIn() {
         password: password
     });
 
-    message.textContent = error
-        ? error.message
-        : "Welcome back to GamingWorld!";
+    if (error) {
+        message.textContent = error.message;
+        return;
+    }
+
+    message.textContent = "Welcome back to GamingWorld!";
+
+    await loadProfile();
+    await loadCommunityGamers();
 }
 
+// GAMINGWORLD LOG OUT
+async function logOut() {
+    const { error } = await sb.auth.signOut();
+    const message = document.getElementById("authMessage");
+
+    if (error) {
+        message.textContent = error.message;
+        return;
+    }
+
+    message.textContent = "You have logged out.";
+
+    document.getElementById("profileName").textContent = "Gamer";
+    document.getElementById("gamerName").value = "";
+    document.getElementById("gamerAvatar").value = "Ninja";
+    document.getElementById("favoriteGame").value = "";
+
+    await loadCommunityGamers();
+}
 // GAMINGWORLD LOG OUT
 async function logOut() {
     const { error } = await sb.auth.signOut();
