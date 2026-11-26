@@ -927,19 +927,32 @@ loadPostsFromSupabase();
 
 const profileForm = document.getElementById("profileForm");
 
-function loadProfile() {
-    const savedProfile = localStorage.getItem("GamingworldProfile");
+async function loadProfile() {
 
-    if (savedProfile) {
-        const profile = JSON.parse(savedProfile);
+    const { data: { user }, error: userError } =
+        await sb.auth.getUser();
 
-        document.getElementById("profileName").textContent =
-            profile.avatar + " " + profile.name;
+    if (userError || !user) return;
 
-        document.getElementById("gamerName").value = profile.name;
-        document.getElementById("gamerAvatar").value = profile.avatar;
-        document.getElementById("favoriteGame").value = profile.favoriteGame;
-    }
+    const { data: profile, error } = await sb
+        .from("profiles")
+        .select("username, avatar, favorite_game")
+        .eq("id", user.id)
+        .maybeSingle();
+
+    if (error || !profile) return;
+
+    document.getElementById("profileName").textContent =
+        profile.avatar + " " + profile.username;
+
+    document.getElementById("gamerName").value =
+        profile.username;
+
+    document.getElementById("gamerAvatar").value =
+        profile.avatar;
+
+    document.getElementById("favoriteGame").value =
+        profile.favorite_game;
 }
 
 profileForm.addEventListener("submit", async function(event) {
