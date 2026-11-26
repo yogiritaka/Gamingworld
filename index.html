@@ -867,8 +867,14 @@ function renderPosts() {
     document.getElementById("postList").innerHTML =
         posts.length
         ? posts.map(p => renderPostCard(p)).join("")
-        : '<p class="empty">No posts yet. Start the conversation!</p>';
+        : '<p class="empty">No posts yet. Start the conversation!';
+
+    // Load comments for every post
+    posts.forEach(post => {
+        loadComments(post.id);
+    });
 }
+
 
 // LOAD COMMUNITY POSTS FROM SUPABASE
 
