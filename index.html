@@ -1044,15 +1044,54 @@ async function loadCommunityGamers() {
             " | Following: " + following;
 
         card.append(avatar, name, game, stats);
+if (user && user.id !== gamer.id) {
 
-        if (user && user.id !== gamer.id) {
-            const button = document.createElement("button");
-            button.textContent = "Follow";
-            button.disabled = true;
-            button.title = "Follow feature coming next!";
-            card.appendChild(button);
+    const { data: existingFollow } = await sb
+        .from("follows")
+        .select("id")
+        .eq("follower_id", user.id)
+        .eq("following_id", gamer.id)
+        .maybeSingle();
+
+    const button = document.createElement("button");
+
+    button.textContent = existingFollow ? "Following" : "Follow";
+
+    button.onclick = async function() {
+
+        if (existingFollow) {
+
+            const { error } = await sb
+                .from("follows")
+                .delete()
+                .eq("follower_id", user.id)
+                .eq("following_id", gamer.id);
+
+            if (error) {
+                alert("Unfollow failed: " + error.message);
+                return;
+            }
+
+        } else {
+
+            const { error } = await sb
+                .from("follows")
+                .insert({
+                    follower_id: user.id,
+                    following_id: gamer.id
+                });
+
+            if (error) {
+                alert("Follow failed: " + error.message);
+                return;
+            }
         }
 
+        await loadCommunityGamers();
+    };
+
+    card.appendChild(button);
+}
         gamersList.appendChild(card);
     }
 }
