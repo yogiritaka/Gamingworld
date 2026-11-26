@@ -735,6 +735,7 @@ document.getElementById("channelForm")
     alert("Your gaming channel has been created! 🎮");
 });
 
+
 // DISPLAY A POST
 
 function renderPostCard(post) {
@@ -754,11 +755,112 @@ function renderPostCard(post) {
                 ❤️ ${Number(post.likes) || 0} Likes
             </button>
 
+            <div class="comments-section">
+                <h4>💬 Comments</h4>
+
+                <div id="comments-${Number(post.id)}">
+                    <p>Loading comments...</p>
+                </div>
+
+                <form onsubmit="addComment(event, ${Number(post.id)})">
+                    <input
+                        type="text"
+                        id="comment-${Number(post.id)}"
+                        placeholder="Write a comment..."
+                        required
+                    >
+
+                    <button type="submit">Send</button>
+                </form>
+            </div>
+
         </div>
     `;
 }
 
+// LOAD COMMENTS FOR A POST
+
+async function loadComments(postId) {
+
+    const commentsBox = document.getElementById("comments-" + postId);
+
+    if (!commentsBox) return;
+
+    const { data: comments, error } = await sb
+        .from("comments")
+        .select("*")
+        .eq("post_id", postId)
+        .order("created_at", { ascending: true });
+
+    if (error) {
+        commentsBox.innerHTML = "<p>Could not load comments.</p>";
+        console.error(error);
+        return;
+    }
+
+    if (!comments || comments.length === 0) {
+        commentsBox.innerHTML = "<p>No comments yet.</p>";
+        return;
+    }
+
+    commentsBox.innerHTML = comments.map(comment => `
+        <p>
+            <strong>👤 ${safe(comment.username)}</strong>:
+            ${safe(comment.message)}
+        </p>
+    `).join("");
+}
+
+
+// ADD A COMMENT
+
+async function addComment(event, postId) {
+
+    event.preventDefault();
+
+    const input = document.getElementById("comment-" + postId);
+    const message = input.value.trim();
+
+    if (!message) return;
+
+    const { data: { user }, error: userError } = await sb.auth.getUser();
+
+    if (userError || !user) {
+        alert("Please log in before commenting.");
+        return;
+    }
+
+    const { data: profile, error: profileError } = await sb
+        .from("profiles")
+        .select("username")
+        .eq("id", user.id)
+        .single();
+
+    if (profileError || !profile) {
+        alert("Please save your GamingWorld profile before commenting.");
+        return;
+    }
+
+    const { error } = await sb.from("comments").insert({
+        post_id: postId,
+        user_id: user.id,
+        username: profile.username,
+        message: message
+    });
+
+    if (error) {
+        alert("Comment failed: " + error.message);
+        console.error(error);
+        return;
+    }
+
+    input.value = "";
+
+    await loadComments(postId);
+}
+
 // GENERAL COMMUNITY FEED
+
 
 function renderPosts() {
 
