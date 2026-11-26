@@ -1176,13 +1176,6 @@ async function logOut() {
 
     await loadCommunityGamers();
 }
-// GAMINGWORLD LOG OUT
-async function logOut() {
-    const { error } = await sb.auth.signOut();
-
-    document.getElementById("authMessage").textContent =
-        error ? error.message : "You have logged out.";
-}
 
 </script>
 
