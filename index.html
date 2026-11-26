@@ -984,7 +984,80 @@ profileForm.addEventListener("submit", async function(event) {
 });
 
 loadProfile();
+// LOAD COMMUNITY GAMERS
 
+async function loadCommunityGamers() {
+
+    const gamersList = document.getElementById("gamersList");
+
+    gamersList.innerHTML = "<p>Loading gamers...</p>";
+
+    const { data: gamers, error } = await sb
+        .from("profiles")
+        .select("id, username, avatar, favorite_game")
+        .order("username");
+
+    if (error) {
+        gamersList.innerHTML = "<p>Could not load gamers.</p>";
+        console.error(error);
+        return;
+    }
+
+    if (!gamers || gamers.length === 0) {
+        gamersList.innerHTML = "<p>No gamers registered yet.</p>";
+        return;
+    }
+
+    const { data: { user } } = await sb.auth.getUser();
+
+    gamersList.innerHTML = "";
+
+    for (const gamer of gamers) {
+
+        const { data: counts, error: countError } = await sb
+            .rpc("get_follow_counts", {
+                target_user_id: gamer.id
+            });
+
+        const followers = countError ? 0 : counts[0].followers_count;
+        const following = countError ? 0 : counts[0].following_count;
+
+        const card = document.createElement("div");
+
+        card.style.padding = "15px";
+        card.style.marginTop = "12px";
+        card.style.border = "1px solid #345";
+        card.style.borderRadius = "10px";
+
+        const avatar = document.createElement("h2");
+        avatar.textContent = gamer.avatar;
+
+        const name = document.createElement("h3");
+        name.textContent = gamer.username;
+
+        const game = document.createElement("p");
+        game.textContent = "Favourite Game: " + gamer.favorite_game;
+
+        const stats = document.createElement("p");
+        stats.textContent =
+            "Followers: " + followers +
+            " | Following: " + following;
+
+        card.append(avatar, name, game, stats);
+
+        if (user && user.id !== gamer.id) {
+            const button = document.createElement("button");
+            button.textContent = "Follow";
+            button.disabled = true;
+            button.title = "Follow feature coming next!";
+            card.appendChild(button);
+        }
+
+        gamersList.appendChild(card);
+    }
+}
+
+loadCommunityGamers();
 // GAMINGWORLD SIGN UP
 // GAMINGWORLD SIGN UP
 async function signUp() {
