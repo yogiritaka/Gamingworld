@@ -446,8 +446,49 @@ footer {
         >
 
         <button type="submit">Save My Profile</button>
-    </form>
+
+</form>
+
+<div class="notification-settings">
+    <h3>🔔 Notification Settings</h3>
+    <p>Choose which notifications you want to receive.</p>
+
+    <label>
+        <input type="checkbox" id="notifyAll" checked>
+        Enable All Notifications
+    </label>
+
+    <hr>
+
+    <label>
+        <input type="checkbox" id="notifyLikes" checked>
+        ❤️ Likes on my posts
+    </label>
+
+    <label>
+        <input type="checkbox" id="notifyComments" checked>
+        💬 Comments on my posts
+    </label>
+
+    <label>
+        <input type="checkbox" id="notifyFollowers" checked>
+        👥 New followers
+    </label>
+
+    <label>
+        <input type="checkbox" id="notifyChannelPosts" checked>
+        🎮 New posts in followed channels
+    </label>
+
+    <button type="button" onclick="saveNotificationSettings()">
+        Save Notification Settings
+    </button>
+
+    <p id="notificationMessage"></p>
+</div>
+
 </section>
+
 <!-- COMMUNITY GAMERS -->
 <section class="panel" id="communityGamers">
 
@@ -1203,6 +1244,90 @@ profileForm.addEventListener("submit", async function(event) {
 });
 
 loadProfile();
+    
+async function loadNotificationSettings() {
+    const { data: { user }, error: userError } =
+        await sb.auth.getUser();
+
+    if (userError || !user) return;
+
+    const { data, error } = await sb
+        .from("notification_settings")
+        .select("*")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+    if (error) {
+        console.error("Could not load notification settings:", error);
+        return;
+    }
+
+    if (!data) {
+        const { error: insertError } = await sb
+            .from("notification_settings")
+            .insert({ user_id: user.id });
+
+        if (insertError) {
+            console.error(insertError);
+            return;
+        }
+
+        return loadNotificationSettings();
+    }
+
+    document.getElementById("notifyAll").checked = data.all_enabled;
+    document.getElementById("notifyLikes").checked = data.likes_enabled;
+    document.getElementById("notifyComments").checked = data.comments_enabled;
+    document.getElementById("notifyFollowers").checked = data.followers_enabled;
+    document.getElementById("notifyChannelPosts").checked = data.channel_posts_enabled;
+}
+
+loadNotificationSettings();
+
+async function saveNotificationSettings() {
+    const { data: { user }, error: userError } =
+        await sb.auth.getUser();
+
+    if (userError || !user) {
+        document.getElementById("notificationMessage").textContent =
+            "Please log in first!";
+        return;
+    }
+
+    const allEnabled = document.getElementById("notifyAll").checked;
+
+    const settings = {
+        user_id: user.id,
+        all_enabled: allEnabled,
+        likes_enabled: allEnabled && document.getElementById("notifyLikes").checked,
+        comments_enabled: allEnabled && document.getElementById("notifyComments").checked,
+        followers_enabled: allEnabled && document.getElementById("notifyFollowers").checked,
+        channel_posts_enabled: allEnabled && document.getElementById("notifyChannelPosts").checked,
+        updated_at: new Date().toISOString()
+    };
+
+    const { error } = await sb
+        .from("notification_settings")
+        .upsert(settings);
+
+    const message = document.getElementById("notificationMessage");
+
+    if (error) {
+        message.textContent = "Could not save settings: " + error.message;
+        console.error(error);
+        return;
+    }
+
+    message.textContent = "✅ Notification settings saved!";
+}
+document.getElementById("notifyAll").addEventListener("change", function() {
+    const enabled = this.checked;
+
+    document.getElementById("notifyLikes").checked = enabled;
+    document.getElementById("notifyComments").checked = enabled;
+    document.getElementById("notifyFollowers").checked = enabled;
+    document.getElementById("notifyChannelPosts").checked = enabled;
+});
 // LOAD COMMUNITY GAMERS
 
 async function loadCommunityGamers() {
