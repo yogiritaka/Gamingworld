@@ -8,7 +8,7 @@ const SUPABASE_URL = "https://ijzjaqrspxsuixjjkuyg.supabase.co";
 // Paste your Supabase PUBLISHABLE KEY between the quotes:
 const SUPABASE_KEY = "sb_publishable_RNgTkXKdoUvlU-4gmII9zA_Y5YckBcV";
 
-const supabase = window.supabase.createClient(
+const sbClient = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
@@ -103,7 +103,7 @@ async function login() {
     return;
   }
 
-  const { error } = await supabase.auth.signInWithPassword({
+  const { error } = await sbClient.auth.signInWithPassword({
     email,
     password
   });
@@ -126,7 +126,7 @@ async function signup() {
     return;
   }
 
-  const { error } = await supabase.auth.signUp({
+  const { error } = await sbClient.auth.signUp({
     email,
     password,
     options: {
@@ -142,7 +142,7 @@ async function signup() {
 }
 
 async function logout() {
-  await supabase.auth.signOut();
+  await sbClient.auth.signOut();
   location.reload();
 }
 
@@ -489,7 +489,7 @@ async function loadCommunityGamers() {
   for (const gamer of profiles) {
     if (currentUser && gamer.id === currentUser.id) continue;
 
-    const { data: counts } = await supabase.rpc("get_follow_counts", {
+    const { data: counts } = await sbClient.rpc("get_follow_counts", {
       profile_id: gamer.id
     });
 
@@ -702,7 +702,7 @@ async function startGamingWorld() {
     return;
   }
 
-  const { data, error } = await supabase.auth.getUser();
+  const { data, error } = await sbClient.auth.getUser();
 
   if (error) console.error(error);
 
