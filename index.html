@@ -790,6 +790,7 @@ async function renderPostCard(post) {
 }
 
 
+
 // LOAD COMMENTS FOR A POST
 
 async function loadComments(postId) {
@@ -815,12 +816,57 @@ async function loadComments(postId) {
         return;
     }
 
-    commentsBox.innerHTML = comments.map(comment => `
-        <p>
-            <strong>👤 ${safe(comment.username)}</strong>:
-            ${safe(comment.message)}
-        </p>
-    `).join("");
+    const { data: { user } } = await sb.auth.getUser();
+
+    commentsBox.innerHTML = comments.map(comment => {
+
+        const deleteButton = user && user.id === comment.user_id
+            ? `<button onclick="deleteComment(${Number(comment.id)}, ${Number(postId)})">
+                   🗑️
+               </button>`
+            : "";
+
+        return `
+            <p>
+                <strong>👤 ${safe(comment.username)}</strong>:
+                ${safe(comment.message)}
+                ${deleteButton}
+            </p>
+        `;
+
+    }).join("");
+}
+
+
+// DELETE YOUR OWN COMMENT
+
+async function deleteComment(commentId, postId) {
+
+    const confirmed = confirm("Are you sure you want to delete this comment?");
+
+    if (!confirmed) return;
+
+    const { data: { user }, error: userError } = await sb.auth.getUser();
+
+    if (userError || !user) {
+        alert("Please log in first.");
+        return;
+    }
+
+    const { error } = await sb
+        .from("comments")
+        .delete()
+        .eq("id", commentId)
+        .eq("user_id", user.id);
+
+    if (error) {
+        alert("Could not delete comment: " + error.message);
+        return;
+    }
+
+    alert("Your comment has been deleted!");
+
+    await loadComments(postId);
 }
 
 
