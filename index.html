@@ -736,9 +736,18 @@ document.getElementById("channelForm")
 });
 
 
-// DISPLAY A POST
 
-function renderPostCard(post) {
+ // DISPLAY A POST
+
+async function renderPostCard(post) {
+
+    const { data: { user } } = await sb.auth.getUser();
+
+    const deleteButton = user && user.id === post.user_id
+        ? `<button onclick="deletePost(${Number(post.id)})">
+               🗑️ Delete Post
+           </button>`
+        : "";
 
     return `
         <div class="post">
@@ -754,6 +763,8 @@ function renderPostCard(post) {
             <button onclick="likePost(${Number(post.id)})">
                 ❤️ ${Number(post.likes) || 0} Likes
             </button>
+
+            ${deleteButton}
 
             <div class="comments-section">
                 <h4>💬 Comments</h4>
@@ -777,6 +788,7 @@ function renderPostCard(post) {
         </div>
     `;
 }
+
 
 // LOAD COMMENTS FOR A POST
 
