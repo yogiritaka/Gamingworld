@@ -7,7 +7,7 @@
 
 body {
   font-family: Arial, sans-serif;
-  background: linear-gradient(rgba(16, 17, 28, 0.35), rgba(16, 17, 28, 0.45)),
+  background: linear-gradient(rgba(16, 17, 28, 0.25), rgba(16, 17, 28, 0.35)),
   url("Monkey%20Warrior%20Before%20Celestial%20Guardians.png") center / cover fixed;
   color: #ffffff;
   line-height: 1.6;
