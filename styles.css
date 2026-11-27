@@ -1,0 +1,178 @@
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #10111c;
+  color: #ffffff;
+  line-height: 1.6;
+}
+
+header {
+  background: #191b2d;
+  padding: 18px 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  border-bottom: 1px solid #30334d;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #8b7cff;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+nav a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+nav a:hover,
+nav a.active {
+  color: #9b8cff;
+}
+
+.hero {
+  text-align: center;
+  padding: 80px 20px;
+  background: linear-gradient(135deg, #25205c, #111322);
+}
+
+.hero h1 {
+  font-size: 38px;
+  margin-bottom: 12px;
+}
+
+.hero h1 span {
+  color: #9b8cff;
+}
+
+.hero p {
+  color: #d0d0e0;
+}
+
+.container {
+  width: 90%;
+  max-width: 1100px;
+  margin: 30px auto;
+}
+
+.panel {
+  background: #1b1d30;
+  border: 1px solid #30334d;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 25px;
+}
+
+.panel h1,
+.panel h2 {
+  margin-bottom: 15px;
+}
+
+.panel p {
+  color: #d0d0e0;
+  margin-bottom: 15px;
+}
+
+button {
+  background: #7965f5;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  padding: 11px 18px;
+  margin: 8px 5px 8px 0;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button:hover {
+  background: #9485ff;
+}
+
+button.secondary {
+  background: #383b55;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.channel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.channel-card,
+.post-card,
+.gamer-card,
+.notification-card {
+  background: #252840;
+  border: 1px solid #383b55;
+  border-radius: 10px;
+  padding: 18px;
+  margin-bottom: 15px;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0 15px;
+  border-radius: 7px;
+  border: 1px solid #444866;
+  background: #111322;
+  color: white;
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+footer {
+  text-align: center;
+  padding: 25px;
+  color: #999bb5;
+  border-top: 1px solid #30334d;
+  margin-top: 40px;
+}
+
+@media (max-width: 700px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  nav {
+    gap: 12px;
+  }
+
+  .hero h1 {
+    font-size: 28px;
+  }
+
+  .panel {
+    padding: 18px;
+  }
+}
