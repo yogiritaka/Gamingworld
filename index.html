@@ -487,6 +487,19 @@ footer {
 </div>
 
     <p id="notificationMessage"></p>
+    
+<hr>
+
+<h3>📬 My Notifications</h3>
+
+<div id="notificationsList">
+    <p>Log in to see your notifications.</p>
+</div>
+
+<button type="button" onclick="loadMyNotifications()">
+    🔄 Refresh Notifications
+</button>
+
 </div>
 
 </section>
@@ -1330,6 +1343,48 @@ document.getElementById("notifyAll").addEventListener("change", function() {
     document.getElementById("notifyFollowers").checked = enabled;
     document.getElementById("notifyChannelPosts").checked = enabled;
 });
+    
+async function loadMyNotifications() {
+    const box = document.getElementById("notificationsList");
+
+    const { data: { user }, error: userError } =
+        await sb.auth.getUser();
+
+    if (userError || !user) {
+        box.innerHTML = "<p>Please log in to see notifications.</p>";
+        return;
+    }
+
+    const { data, error } = await sb
+        .from("notifications")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+
+    if (error) {
+        console.error("Could not load notifications:", error);
+        box.innerHTML = "<p>Could not load notifications.</p>";
+        return;
+    }
+
+    if (!data || data.length === 0) {
+        box.innerHTML = "<p>🔔 No notifications yet!</p>";
+        return;
+    }
+
+    box.innerHTML = data.map(notification => {
+        const date = new Date(notification.created_at).toLocaleString();
+
+        return `
+            <div style="padding:12px; border-bottom:1px solid #526078;">
+                <p>${safe(notification.message)}</p>
+                <small style="color:#9aabc2;">${safe(date)}</small>
+                ${notification.read_at ? "" : "<strong> 🆕 New</strong>"}
+            </div>
+        `;
+    }).join("");
+}
+
 // LOAD COMMUNITY GAMERS
 
 async function loadCommunityGamers() {
@@ -1483,11 +1538,12 @@ async function logIn() {
         message.textContent = error.message;
         return;
     }
+message.textContent = "Welcome back to GamingWorld!";
 
-    message.textContent = "Welcome back to GamingWorld!";
-
-    await loadProfile();
-    await loadCommunityGamers();
+await loadProfile();
+await loadCommunityGamers();
+await loadNotificationSettings();
+await loadMyNotifications();
 }
 
 // GAMINGWORLD LOG OUT
@@ -1501,7 +1557,8 @@ async function logOut() {
     }
 
     message.textContent = "You have logged out.";
-
+document.getElementById("notificationsList").innerHTML =
+    "<p>Please log in to see notifications.</p>";
     document.getElementById("profileName").textContent = "Gamer";
     document.getElementById("gamerName").value = "";
     document.getElementById("gamerAvatar").value = "Ninja";
