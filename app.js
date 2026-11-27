@@ -153,7 +153,7 @@ async function logout() {
 async function loadProfile() {
   if (!currentUser) return;
 
-  const { data, error } = await supabase
+  const { data, error } = await sbClient
     .from("profiles")
     .select("*")
     .eq("id", currentUser.id)
@@ -210,7 +210,7 @@ async function saveProfile() {
     return;
   }
 
-  const { error } = await supabase
+  const { error } = await sbClient
     .from("profiles")
     .upsert({
       id: currentUser.id,
@@ -294,7 +294,7 @@ async function loadPosts() {
     html += `<p>Please log in to create posts.</p>`;
   }
 
-  const { data, error } = await supabase
+  const { data, error } = await sbClient
     .from("posts")
     .select("*")
     .order("created_at", { ascending: false });
@@ -330,7 +330,7 @@ async function createPost() {
 
   const username = currentProfile?.username || currentUser.email;
 
-  const { error } = await supabase
+  const { error } = await sbClient
     .from("posts")
     .insert({
       user_id: currentUser.id,
@@ -350,7 +350,7 @@ async function createPost() {
 async function renderPost(post) {
   const isOwner = currentUser && currentUser.id === post.user_id;
 
-  const { data: comments } = await supabase
+  const { data: comments } = await sbClient
     .from("comments")
     .select("*")
     .eq("post_id", post.id)
@@ -398,7 +398,7 @@ async function renderPost(post) {
 async function likePost(postId) {
   if (!currentUser) return alert("Please log in first.");
 
-  const { error } = await supabase
+  const { error } = await sbClient
     .from("post_likes")
     .insert({
       post_id: postId,
@@ -418,7 +418,7 @@ async function addComment(postId) {
 
   if (!content) return;
 
-  const { error } = await supabase
+  const { error } = await sbClient
     .from("comments")
     .insert({
       post_id: postId,
@@ -438,7 +438,7 @@ async function addComment(postId) {
 async function deleteComment(commentId) {
   if (!confirm("Delete this comment?")) return;
 
-  const { error } = await supabase
+  const { error } = await sbClient
     .from("comments")
     .delete()
     .eq("id", commentId)
@@ -451,7 +451,7 @@ async function deleteComment(commentId) {
 async function deletePost(postId) {
   if (!confirm("Delete this post?")) return;
 
-  const { error } = await supabase
+  const { error } = await sbClient
     .from("posts")
     .delete()
     .eq("id", postId)
@@ -469,7 +469,7 @@ async function loadCommunityGamers() {
   const area = document.getElementById("gamersList");
   if (!area) return;
 
-  const { data: profiles, error } = await supabase
+  const { data: profiles, error } = await sbClient
     .from("profiles")
     .select("*")
     .order("username");
@@ -499,7 +499,7 @@ async function loadCommunityGamers() {
     let following = false;
 
     if (currentUser) {
-      const { data: existing } = await supabase
+      const { data: existing } = await sbClient
         .from("follows")
         .select("id")
         .eq("follower_id", currentUser.id)
@@ -534,13 +534,13 @@ async function toggleFollow(gamerId, following) {
   let result;
 
   if (following) {
-    result = await supabase
+    result = await sbClient
       .from("follows")
       .delete()
       .eq("follower_id", currentUser.id)
       .eq("following_id", gamerId);
   } else {
-    result = await supabase
+    result = await sbClient
       .from("follows")
       .insert({
         follower_id: currentUser.id,
@@ -564,7 +564,7 @@ async function loadNotificationSettings() {
   const area = document.getElementById("notificationSettings");
   if (!area || !currentUser) return;
 
-  const { data, error } = await supabase
+  const { data, error } = await sbClient
     .from("notification_settings")
     .select("*")
     .eq("user_id", currentUser.id)
@@ -637,7 +637,7 @@ async function saveNotificationSettings() {
     updated_at: new Date().toISOString()
   };
 
-  const { error } = await supabase
+  const { error } = await sbClient
     .from("notification_settings")
     .upsert(settings);
 
@@ -656,7 +656,7 @@ async function loadNotifications() {
     return;
   }
 
-  const { data, error } = await supabase
+  const { data, error } = await sbClient
     .from("notifications")
     .select("*")
     .order("created_at", { ascending: false });
@@ -683,7 +683,7 @@ async function loadNotifications() {
 }
 
 async function markNotificationRead(id) {
-  const { error } = await supabase
+  const { error } = await sbClient
     .from("notifications")
     .update({ read_at: new Date().toISOString() })
     .eq("id", id);
