@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GamingWorld - Notifications</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div class="logo">🎮 GamingWorld</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="channels.html">Channels</a>
+      <a href="community.html">Community</a>
+      <a href="gamers.html">Gamers</a>
+      <a href="profile.html">My Profile</a>
+      <a class="active" href="notifications.html">Notifications</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+      <h1>🔔 Notifications</h1>
+
+      <div id="notificationSettings"></div>
+
+      <h2>Your Notifications</h2>
+      <div id="notificationsList">
+        <p>Loading notifications...</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>© 2026 GamingWorld Community</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+</body>
+</html>
