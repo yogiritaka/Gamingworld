@@ -720,5 +720,44 @@ async function startGamingWorld() {
   await loadCommunityGamers();
   await loadNotifications();
 }
+function openChannelRequest() {
+  const existingForm = document.getElementById("channelRequestModal");
+
+  if (existingForm) {
+    existingForm.style.display = "flex";
+    return;
+  }
+
+  const modal = document.createElement("div");
+  modal.id = "channelRequestModal";
+  modal.className = "channel-request-modal";
+
+  modal.innerHTML = `
+    <div class="channel-request-box">
+      <h2>🎮 Request a New Channel</h2>
+
+      <label>Channel name</label>
+      <input id="requestedChannelName"
+             type="text"
+             placeholder="Example: Black Myth Wukong"
+             maxlength="50">
+
+      <label>Why do you want this channel? (Optional)</label>
+      <textarea id="requestedChannelReason"
+                placeholder="Tell us about your request..."
+                maxlength="300"></textarea>
+
+      <button onclick="submitChannelRequest()">
+        Submit Request
+      </button>
+
+      <button onclick="document.getElementById('channelRequestModal').remove()">
+        Cancel
+      </button>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+}
 
 startGamingWorld();
