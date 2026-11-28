@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GamingWorld Admin</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <h1>🎮 GamingWorld Admin</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="channels.html">Channels</a>
+      <a href="community.html">Community</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h2>Channel Requests</h2>
+    <p>Review player requests and approve or reject them.</p>
+
+    <div id="adminRequests">
+      <p>Loading requests...</p>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+</body>
+</html>
