@@ -208,4 +208,60 @@ footer {
 
 .request-channel-banner button:hover {
   background: #3154bd;
+  .channel-request-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.channel-request-box {
+  background: #171d2d;
+  border: 1px solid #526da8;
+  border-radius: 14px;
+  padding: 25px;
+  width: 100%;
+  max-width: 450px;
+}
+
+.channel-request-box h2 {
+  margin-bottom: 20px;
+}
+
+.channel-request-box label {
+  display: block;
+  margin: 12px 0 6px;
+}
+
+.channel-request-box input,
+.channel-request-box textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #526da8;
+  background: #101522;
+  color: white;
+  margin-bottom: 12px;
+  font: inherit;
+}
+
+.channel-request-box textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.channel-request-box button {
+  padding: 11px 16px;
+  margin: 6px 6px 0 0;
+  border: none;
+  border-radius: 8px;
+  background: #4169e1;
+  color: white;
+  cursor: pointer;
+}
 }
