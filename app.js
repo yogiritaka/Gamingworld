@@ -932,6 +932,45 @@ async function rejectChannelRequest(requestId) {
 
 startGamingWorld();
 
+async function loadChannelFeed() {
+  const feed = document.getElementById("channelFeed");
+  if (!feed) return;
+
+  const params = new URLSearchParams(location.search);
+  const selectedGame = params.get("game");
+
+  if (!selectedGame) {
+    feed.innerHTML = "<p>No game selected.</p>";
+    return;
+  }
+
+  const { data: posts, error } = await sbClient
+    .from("posts")
+    .select("*")
+    .eq("game", selectedGame)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Channel posts error:", error.message);
+    feed.innerHTML = "<p>Could not load channel posts.</p>";
+    return;
+  }
+
+  if (!posts || posts.length === 0) {
+    feed.innerHTML = "<p>No posts yet. Be the first to share something!</p>";
+    return;
+  }
+
+  feed.innerHTML = posts.map(post => `
+    <div class="post-card">
+      <h3>${safe(post.username)}</h3>
+      <p>${safe(post.message)}</p>
+    </div>
+  `).join("");
+}
+
+loadChannelFeed();
+
 if (document.getElementById("adminRequests")) {
   loadAdminRequests();
 }
