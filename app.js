@@ -257,15 +257,17 @@ const allGames = [...games];
   }
 });
 
-grid.innerHTML = allGames.map(game =>
-    <div class="channel-card">
-      <h3>🎮 ${safe(game)}</h3>
-      <p>Join the ${safe(game)} gaming community.</p>
-      <button onclick="openChannel('${safe(game)}')">
-        Open Channel
-      </button>
-    </div>
-  `).join("");
+
+grid.innerHTML = allGames.map(game => `
+  <div class="channel-card">
+    <h3>🎮 ${safe(game)}</h3>
+    <p>Join the ${safe(game)} gaming community.</p>
+    <button onclick="openChannel('${safe(game)}')">
+      Open Channel
+    </button>
+  </div>
+`).join("");
+
 
   const params = new URLSearchParams(location.search);
   const selectedGame = params.get("game");
