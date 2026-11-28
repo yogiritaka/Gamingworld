@@ -237,7 +237,27 @@ async function loadChannels() {
   const grid = document.getElementById("channelGrid");
   if (!grid) return;
 
-  grid.innerHTML = games.map(game => `
+  const { data: approvedChannels, error } = await sbClient
+  .from("gamingworld_channels")
+  .select("name");
+
+if (error) {
+  console.error("Could not load approved channels:", error.message);
+}
+
+const allGames = [...games];
+
+(approvedChannels || []).forEach(channel => {
+  const alreadyExists = allGames.some(
+    game => game.toLowerCase() === channel.name.toLowerCase()
+  );
+
+  if (!alreadyExists) {
+    allGames.push(channel.name);
+  }
+});
+
+grid.innerHTML = allGames.map(game =>
     <div class="channel-card">
       <h3>🎮 ${safe(game)}</h3>
       <p>Join the ${safe(game)} gaming community.</p>
