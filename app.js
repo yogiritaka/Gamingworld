@@ -812,4 +812,104 @@ async function submitChannelRequest() {
 
   document.getElementById("channelRequestModal").remove();
 }
+
+async function loadAdminRequests() {
+  const container = document.getElementById("adminRequests");
+  if (!container) return;
+
+  const { data: { user }, error: authError } =
+    await sbClient.auth.getUser();
+
+  if (authError || !user) {
+    container.innerHTML = "<p>Please sign in to continue.</p>";
+    return;
+  }
+
+  const { data: isAdmin, error: adminError } =
+    await sbClient.rpc("is_gamingworld_admin");
+
+  if (adminError || !isAdmin) {
+    container.innerHTML = "<p>Access denied. Admins only.</p>";
+    return;
+  }
+
+  const { data: requests, error } = await sbClient
+    .from("channel_requests")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    container.innerHTML = "<p>Could not load requests: " +
+      error.message + "</p>";
+    return;
+  }
+
+  if (!requests || requests.length === 0) {
+    container.innerHTML = "<p>No channel requests yet.</p>";
+    return;
+  }
+
+  container.innerHTML = requests.map(request => `
+    <div class="channel-request-box" style="margin:15px 0; color:white;">
+      <h3>${escapeHTML(request.channel_name)}</h3>
+      <p>${escapeHTML(request.reason || "No reason provided")}</p>
+      <p>Status: ${escapeHTML(request.status)}</p>
+      ${request.status === "pending" ? `
+        <button onclick="approveChannelRequest(${request.id})">
+          Approve
+        </button>
+        <button onclick="rejectChannelRequest(${request.id})">
+          Reject
+        </button>
+      ` : ""}
+    </div>
+  `).join("");
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, character => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[character]);
+}
+
+async function approveChannelRequest(requestId) {
+  if (!confirm("Approve this channel request?")) return;
+
+  const { error } = await sbClient.rpc("approve_channel_request", {
+    request_id: requestId
+  });
+
+  if (error) {
+    alert("Approval failed: " + error.message);
+    return;
+  }
+
+  alert("Channel approved successfully!");
+  loadAdminRequests();
+}
+
+async function rejectChannelRequest(requestId) {
+  if (!confirm("Reject this channel request?")) return;
+
+  const { error } = await sbClient.rpc("reject_channel_request", {
+    request_id: requestId
+  });
+
+  if (error) {
+    alert("Rejection failed: " + error.message);
+    return;
+  }
+
+  alert("Request rejected.");
+  loadAdminRequests();
+}
+
 startGamingWorld();
+
+if (document.getElementById("adminRequests")) {
+  loadAdminRequests();
+}
