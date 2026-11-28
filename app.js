@@ -731,9 +731,18 @@ function openChannelRequest() {
   const modal = document.createElement("div");
   modal.id = "channelRequestModal";
   modal.className = "channel-request-modal";
-
+modal.style.cssText = `
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  padding: 20px;
+`;
   modal.innerHTML = `
-    <div class="channel-request-box">
+    <div class="channel-request-box" style="background:#171d2d; border:1px solid #526da8; border-radius:14px; padding:25px; width:100%; max-width:450px; color:white; box-sizing:border-box;">
       <h2>🎮 Request a New Channel</h2>
 
       <label>Channel name</label>
