@@ -971,6 +971,54 @@ async function loadChannelFeed() {
 
 loadChannelFeed();
 
+async function createChannelPost() {
+  const messageInput = document.getElementById("channelPostMessage");
+  const message = messageInput.value.trim();
+
+  if (!message) {
+    alert("Please write something first!");
+    return;
+  }
+
+  const { data: { user }, error: userError } =
+    await sbClient.auth.getUser();
+
+  if (userError || !user) {
+    alert("Please sign in to publish a post.");
+    return;
+  }
+
+  const { data: profile } = await sbClient
+    .from("profiles")
+    .select("username")
+    .eq("id", user.id)
+    .single();
+
+  const username = profile?.username || "Gamer";
+
+  const params = new URLSearchParams(location.search);
+  const selectedGame = params.get("game");
+
+  const { error } = await sbClient
+    .from("posts")
+    .insert({
+      user_id: user.id,
+      username: username,
+      game: selectedGame,
+      message: message
+    });
+
+  if (error) {
+    alert("Could not publish post: " + error.message);
+    return;
+  }
+
+  messageInput.value = "";
+  alert("Your post was published!");
+
+  await loadChannelFeed();
+}
+
 if (document.getElementById("adminRequests")) {
   loadAdminRequests();
 }
