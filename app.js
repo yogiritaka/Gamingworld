@@ -971,7 +971,7 @@ async function loadChannelFeed() {
 
 loadChannelFeed();
 
-async function createChannelPost() {
+window.createChannelPost = async function() {
   const messageInput = document.getElementById("channelPostMessage");
   const message = messageInput.value.trim();
 
@@ -1021,4 +1021,4 @@ async function createChannelPost() {
 
 if (document.getElementById("adminRequests")) {
   loadAdminRequests();
-}
+};
