@@ -177,3 +177,35 @@ footer {
     padding: 18px;
   }
 }
+.request-channel-banner {
+  background: rgba(25, 35, 65, 0.85);
+  border: 1px solid #526da8;
+  border-radius: 14px;
+  padding: 25px;
+  margin: 25px 0;
+  text-align: center;
+}
+
+.request-channel-banner h2 {
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.request-channel-banner p {
+  color: #d5dbea;
+  margin-bottom: 18px;
+}
+
+.request-channel-banner button {
+  background: #4169e1;
+  color: white;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.request-channel-banner button:hover {
+  background: #3154bd;
+}
