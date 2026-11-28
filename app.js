@@ -785,9 +785,10 @@ async function submitChannelRequest() {
     return;
   }
 
-  const existingChannel = games.find(
-    game => game.name.toLowerCase() === name.toLowerCase()
-  );
+  const existingChannel = games.find(game => {
+  const gameName = typeof game === "string" ? game : game?.name;
+  return gameName && gameName.toLowerCase() === name.toLowerCase();
+});
 
   if (existingChannel) {
     alert("This channel already exists on GamingWorld!");
