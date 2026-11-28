@@ -768,5 +768,47 @@ modal.style.cssText = `
 
   document.body.appendChild(modal);
 }
+async function submitChannelRequest() {
+  const name = document.getElementById("requestedChannelName").value.trim();
+  const reason = document.getElementById("requestedChannelReason").value.trim();
 
+  if (!name) {
+    alert("Please enter a channel name.");
+    return;
+  }
+
+  const { data: { user }, error: userError } =
+    await sbClient.auth.getUser();
+
+  if (userError || !user) {
+    alert("Please sign in before requesting a channel.");
+    return;
+  }
+
+  const existingChannel = games.find(
+    game => game.name.toLowerCase() === name.toLowerCase()
+  );
+
+  if (existingChannel) {
+    alert("This channel already exists on GamingWorld!");
+    return;
+  }
+
+  const { error } = await sbClient
+    .from("channel_requests")
+    .insert({
+      user_id: user.id,
+      channel_name: name,
+      reason: reason || null
+    });
+
+  if (error) {
+    alert("Request failed: " + error.message);
+    return;
+  }
+
+  alert("Your channel request has been submitted!");
+
+  document.getElementById("channelRequestModal").remove();
+}
 startGamingWorld();
